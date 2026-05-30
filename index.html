@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Story — Bar · Restaurant | Create Your Story Here</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            50: '#fdf8e8',
+                            100: '#f5e6b8',
+                            200: '#f5d780',
+                            300: '#e8c54a',
+                            400: '#c9a84c',
+                            500: '#b8960f',
+                            600: '#8b6914',
+                            700: '#6b5210',
+                            800: '#4a3a0c',
+                            900: '#2a2006'
+                        },
+                        dark: {
+                            50: '#2a2a2a',
+                            100: '#1f1f1f',
+                            200: '#1a1a1a',
+                            300: '#151515',
+                            400: '#111111',
+                            500: '#0d0d0d',
+                            600: '#0a0a0a',
+                            700: '#070707',
+                            800: '#050505',
+                            900: '#000000'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 6px }
+        ::-webkit-scrollbar-track { background: #0a0a0a }
+        ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 3px }
+        ::-webkit-scrollbar-thumb:hover { background: #c9a84c }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px) }
+            to { opacity: 1; transform: translateY(0) }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0 }
+            to { opacity: 1 }
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% center }
+            100% { background-position: 200% center }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) }
+            50% { transform: translateY(-10px) }
+        }
+        @keyframes goldPulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(201, 168, 76, 0.1) }
+            50% { box-shadow: 0 0 40px rgba(201, 168, 76, 0.25) }
+        }
+
+        .animate-fadeInUp { animation: fadeInUp 1s ease-out forwards }
+        .animate-fadeIn { animation: fadeIn 1.2s ease-out forwards }
+        .animate-shimmer {
+            background: linear-gradient(90deg, #c9a84c 0%, #f5d780 25%, #c9a84c 50%, #f5d780 75%, #c9a84c 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 4s linear infinite;
+        }
+        .animate-float { animation: float 4s ease-in-out infinite }
+        .animate-goldPulse { animation: goldPulse 3s ease-in-out infinite }
+
+        .delay-100 { animation-delay: 100ms }
+        .delay-200 { animation-delay: 200ms }
+        .delay-300 { animation-delay: 300ms }
+        .delay-400 { animation-delay: 400ms }
+        .delay-500 { animation-delay: 500ms }
+        .delay-600 { animation-delay: 600ms }
+        .delay-800 { animation-delay: 800ms }
+
+        .hero-bg {
+            background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 50%, rgba(10,10,10,1) 100%),
+                        url('https://picsum.photos/seed/georgian-feast/1920/1080.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .glass-dark {
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(201, 168, 76, 0.1);
+        }
+
+        .divider-gold {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #c9a84c, transparent);
+        }
+
+        .text-shadow-gold {
+            text-shadow: 0 0 40px rgba(201, 168, 76, 0.3);
+        }
+
+        .observe-animate {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .observe-animate.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .nav-scrolled {
+            background: rgba(10, 10, 10, 0.95) !important;
+            backdrop-filter: blur(20px) !important;
+            border-bottom: 1px solid rgba(201, 168, 76, 0.15) !important;
+        }
+
+        .tab-active {
+            color: #c9a84c !important;
+            border-color: #c9a84c !important;
+            background: rgba(201, 168, 76, 0.08) !important;
+        }
+
+        .toast {
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+
+        .menu-dots {
+            flex: 1;
+            min-width: 20px;
+            border-bottom: 1px dotted rgba(201, 168, 76, 0.12); 
+            margin: 0 8px;
+            position: relative;
+            top: -4px;
+        }
+    </style>
+</head>
+<body class="bg-dark-600 text-stone-100 font-sans antialiased overflow-x-hidden">
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed top-24 right-6 z-[100] flex flex-col gap-3"></div>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="#hero" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-full border border-gold-400/60 flex items-center justify-center group-hover:border-gold-200 transition-colors duration-300">
+                    <iconify-icon icon="ph:fork-knife" class="text-gold-400 text-lg"></iconify-icon>
+                </div>
+                <div>
+                    <span class="font-serif text-xl font-semibold tracking-wide text-stone-100">Story</span>
+                    <span class="hidden sm:inline text-[10px] tracking-[0.3em] uppercase text-gold-400/70 ml-2 font-light">Bar · Restaurant</span>
+                </div>
+            </a>
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#about" class="text-[11px] font-medium tracking-[0.15em] uppercase text-stone-400 hover:text-gold-400 transition-colors duration-300">About</a>
+                <a href="#menu" class="text-[11px] font-medium tracking-[0.15em] uppercase text-stone-400 hover:text-gold-400 transition-colors duration-300">Menu</a>
+                <a href="#reviews" class="text-[11px] font-medium tracking-[0.15em] uppercase text-stone-400 hover:text-gold-400 transition-colors duration-300">Reviews</a>
+                <a href="#gallery" class="text-[11px] font-medium tracking-[0.15em] uppercase text-stone-400 hover:text-gold-400 transition-colors duration-300">Gallery</a>
+                <a href="#contact" class="text-[11px] font-medium tracking-[0.15em] uppercase text-stone-400 hover:text-gold-400 transition-colors duration-300">Contact</a>
+                <a href="#reserve" class="ml-4 px-6 py-2.5 border border-gold-400/50 text-gold-400 text-[11px] font-semibold tracking-[0.15em] uppercase hover:bg-gold-400 hover:text-dark-900 transition-all duration-300 rounded-none">Reserve</a>
+            </div>
+            <button id="mobile-menu-btn" class="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 group">
+                <span class="w-6 h-px bg-gold-400 transition-all duration-300"></span>
+                <span class="w-5 h-px bg-gold-400 transition-all duration-300"></span>
+                <span class="w-4 h-px bg-gold-400 transition-all duration-300"></span>
+            </button>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden glass-dark min-h-screen pt-20">
+            <div class="flex flex-col items-center gap-8 py-16">
+                <a href="#about" class="mobile-link text-sm font-medium tracking-[0.2em] uppercase text-stone-300 hover:text-gold-400 transition-colors">About</a>
+                <a href="#menu" class="mobile-link text-sm font-medium tracking-[0.2em] uppercase text-stone-300 hover:text-gold-400 transition-colors">Menu</a>
+                <a href="#reviews" class="mobile-link text-sm font-medium tracking-[0.2em] uppercase text-stone-300 hover:text-gold-400 transition-colors">Reviews</a>
+                <a href="#gallery" class="mobile-link text-sm font-medium tracking-[0.2em] uppercase text-stone-300 hover:text-gold-400 transition-colors">Gallery</a>
+                <a href="#contact" class="mobile-link text-sm font-medium tracking-[0.2em] uppercase text-stone-300 hover:text-gold-400 transition-colors">Contact</a>
+                <div class="divider-gold w-16 my-4"></div>
+                <a href="#reserve" class="mobile-link px-8 py-3 border border-gold-400/50 text-gold-400 text-sm font-semibold tracking-[0.15em] uppercase hover:bg-gold-400 hover:text-dark-900 transition-all duration-300">Reserve a Table</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero-bg min-h-screen flex items-center justify-center relative overflow-hidden">
+        <div class="absolute top-1/4 left-10 w-px h-32 bg-gradient-to-b from-transparent via-gold-400/30 to-transparent hidden lg:block"></div>
+        <div class="absolute top-1/3 right-10 w-px h-32 bg-gradient-to-b from-transparent via-gold-400/30 to-transparent hidden lg:block"></div>
+        <div class="absolute top-8 left-8 border-l border-t border-gold-400/20 w-16 h-16 hidden lg:block"></div>
+        <div class="absolute bottom-8 right-8 border-r border-b border-gold-400/20 w-16 h-16 hidden lg:block"></div>
+
+        <div class="text-center px-6 max-w-5xl mx-auto relative z-10">
+            <div class="animate-fadeInUp opacity-0 mb-8">
+                <span class="inline-flex items-center gap-2 px-4 py-2 border border-gold-400/30 text-gold-400 text-[10px] tracking-[0.3em] uppercase font-medium">
+                    <iconify-icon icon="ph:star-four-fill" class="text-xs"></iconify-icon>
+                    Kutaisi's Hidden Gem
+                    <iconify-icon icon="ph:star-four-fill" class="text-xs"></iconify-icon>
+                </span>
+            </div>
+            <h1 class="font-serif font-light animate-fadeInUp opacity-0 delay-200">
+                <span class="block text-5xl sm:text-7xl md:text-8xl lg:text-9xl tracking-tight text-stone-100 text-shadow-gold">Create Your</span>
+                <span class="block text-6xl sm:text-8xl md:text-9xl lg:text-[10rem] tracking-tight animate-shimmer mt-2">Story Here</span>
+            </h1>
+            <p class="mt-8 text-stone-400 font-light text-base sm:text-lg max-w-xl mx-auto leading-relaxed animate-fadeInUp opacity-0 delay-400">
+                Where Georgian tradition meets contemporary elegance.<br class="hidden sm:block">
+                Exceptional cuisine, crafted cocktails, unforgettable moments.
+            </p>
+            <div class="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4 animate-fadeInUp opacity-0 delay-600">
+                <a href="#menu" class="group px-8 py-3.5 bg-gold-400 text-dark-900 text-[11px] font-semibold tracking-[0.15em] uppercase hover:bg-gold-200 transition-all duration-300 flex items-center gap-3">
+                    Explore Menu
+                    <iconify-icon icon="ph:arrow-right" class="text-sm transition-transform duration-300 group-hover:translate-x-1"></iconify-icon>
+                </a>
+                <a href="#reserve" class="px-8 py-3.5 border border-gold-400/40 text-gold-400 text-[11px] font-semibold tracking-[0.15em] uppercase hover:bg-gold-400/10 transition-all duration-300">
+                    Reserve a Table
+                </a>
+            </div>
+            <div class="mt-16 animate-fadeInUp opacity-0 delay-800">
+                <div class="inline-flex items-center gap-4 px-6 py-3 glass-dark rounded-full">
+                    <div class="flex items-center gap-1">
+                        <iconify-icon icon="ph:star-fill" class="text-gold-400 text-sm"></iconify-icon>
+                        <iconify-icon icon="ph:star-fill" class="text-gold-400 text-sm"></iconify-icon>
+                        <iconify-icon icon="ph:star-fill" class="text-gold-400 text-sm"></iconify-icon>
+                        <iconify-icon icon="ph:star-fill" class="text-gold-400 text-sm"></iconify-icon>
+                        <iconify-icon icon="ph:star-half-fill" class="text-gold-400 text-sm"></iconify-icon>
+                    </div>
+                    <span class="text-gold-400 font-serif text-lg font-semibold">4.6</span>
+                    <span class="text-stone-500 text-xs tracking-wide">1,099 reviews</span>
+                </div>
+            </div>
+        </div>
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-float">
+            <div class="flex flex-col items-center gap-2">
+                <span class="text-[9px] tracking-[0.3em] uppercase text-gold-400/50">Scroll</span>
+                <iconify-icon icon="ph:caret-down" class="text-gold-400/50 text-lg"></iconify-icon>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 md:py-32 relative overflow-hidden">
+        <div class="absolute -top-32 -left-32 w-96 h-96 bg-gold-400/5 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-gold-400/5 rounded-full blur-3xl"></div>
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="relative observe-animate">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="space-y-4">
+                            <div class="aspect-[3/4] overflow-hidden">
+                                <img src="images/food-1.jpg" alt="Georgian wine" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700 grayscale-[20%] hover:grayscale-0">
+                            </div>
+                            <div class="aspect-square overflow-hidden">
+                                <img src="images/food-2.jpg" alt="Cozy ambiance" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700 grayscale-[20%] hover:grayscale-0">
+                            </div>
+                        </div>
+                        <div class="space-y-4 pt-8">
+                            <div class="aspect-square overflow-hidden">
+                                <img src="images/food-3.jpg" alt="Georgian feast" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700 grayscale-[20%] hover:grayscale-0">
+                            </div>
+                            <div class="aspect-[3/4] overflow-hidden">
+                                <img src="images/food-4.jpg" alt="Cocktail bar" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700 grayscale-[20%] hover:grayscale-0">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-dark-600 border border-gold-400/30 p-6 text-center animate-goldPulse">
+                        <span class="block font-serif text-3xl text-gold-400 font-semibold">4.6</span>
+                        <span class="text-[9px] tracking-[0.2em] uppercase text-stone-500">Google Rating</span>
+                    </div>
+                </div>
+                <div class="observe-animate">
+                    <span class="text-[10px] font-medium tracking-[0.3em] uppercase text-gold-400">Our Story</span>
+                    <h2 class="mt-4 font-serif text-4xl md:text-5xl font-light tracking-tight text-stone-100">
+                        Where Every Meal<br><span class="text-gold-400">Tells a Story</span>
+                    </h2>
+                    <div class="divider-gold w-16 my-8"></div>
+                    <p class="text-stone-400 font-light leading-relaxed mb-6">
+                        Nestled in the heart of Kutaisi, Story is more than a restaurant — it's a journey through Georgia's rich culinary heritage, reimagined with contemporary flair. Our kitchen honors centuries-old traditions while embracing modern techniques and global influences.
+                    </p>
+                    <p class="text-stone-400 font-light leading-relaxed mb-8">
+                        From the smoky aroma of our mtsvadi to the delicate layers of our signature cocktails, every detail at Story is crafted to create moments worth remembering. Warm ambiance, attentive service, and flavors that linger long after the last bite.
+                    </p>
+                    <div class="grid grid-cols-3 gap-6 mb-10">
+                        <div class="border-l border-gold-400/20 pl-4">
+                            <span class="block font-serif text-2xl text-gold-400">1,099+</span>
+                            <span class="text-[10px] tracking-[0.15em] uppercase text-stone-500 mt-1 block">Reviews</span>
+                        </div>
+                        <div class="border-l border-gold-400/20 pl-4">
+                            <span class="block font-serif text-2xl text-gold-400">50+</span>
+                            <span class="text-[10px] tracking-[0.15em] uppercase text-stone-500 mt-1 block">Dishes</span>
+                        </div>
+                        <div class="border-l border-gold-400/20 pl-4">
+                            <span class="block font-serif text-2xl text-gold-400">10</span>
+                            <span class="text-[10px] tracking-[0.15em] uppercase text-stone-500 mt-1 block">Signature Cocktails</span>
+                        </div>
+                    </div>
+                    <a href="#menu" class="group inline-flex items-center gap-3 text-gold-400 text-[11px] font-semibold tracking-[0.15em] uppercase hover:gap-5 transition-all duration-300">
+                        Discover Our Menu
+                        <iconify-icon icon="ph:arrow-right" class="text-sm"></iconify-icon>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Signature Experience -->
+    <section class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-gold-400/10">
+                <div class="bg-dark-600 p-10 md:p-12 text-center group observe-animate hover:bg-dark-400 transition-colors duration-500">
+                    <iconify-icon icon="ph:fire-simple" class="text-gold-400 text-3xl mb-4 block mx-auto"></iconify-icon>
+                    <h3 class="font-serif text-xl text-stone-100 mb-3">Authentic Flavors</h3>
+                    <p class="text-stone-500 font-light text-sm leading-relaxed">Traditional Georgian recipes passed down through generations, prepared with passion and precision.</p>
+                </div>
+                <div class="bg-dark-600 p-10 md:p-12 text-center group observe-animate hover:bg-dark-400 transition-colors duration-500">
+                    <iconify-icon icon="ph:wine" class="text-gold-400 text-3xl mb-4 block mx-auto"></iconify-icon>
+                    <h3 class="font-serif text-xl text-stone-100 mb-3">Craft Cocktails</h3>
+                    <p class="text-stone-500 font-light text-sm leading-relaxed">From our Story Special to classic Old Fashioneds — every sip is an experience crafted by skilled mixologists.</p>
+                </div>
+                <div class="bg-dark-600 p-10 md:p-12 text-center group observe-animate hover:bg-dark-400 transition-colors duration-500">
+                    <iconify-icon icon="ph:heart-half" class="text-gold-400 text-3xl mb-4 block mx-auto"></iconify-icon>
+                    <h3 class="font-serif text-xl text-stone-100 mb-3">Warm Ambiance</h3>
+                    <p class="text-stone-500 font-light text-sm leading-relaxed">A cozy, inviting space where strangers become friends and every visit writes a new chapter.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="py-24 md:py-32 relative">
+        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-400/20 to-transparent"></div>
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 observe-animate">
+                <span class="text-[10px] font-medium tracking-[0.3em] uppercase text-gold-400">Culinary Journey</span>
+                <h2 class="mt-4 font-serif text-4xl md:text-5xl font-light tracking-tight text-stone-100">Our Menu</h2>
+                <p class="mt-4 text-stone-500 font-light max-w-lg mx-auto">A celebration of Georgian cuisine with contemporary touches — each dish crafted to tell its own story.</p>
+                <p class="mt-3 text-gold-400/50 text-[10px] tracking-[0.2em] uppercase">Service 12%</p>
+            </div>
+
+            <!-- Menu Tabs -->
+            <div class="flex flex-wrap justify-center gap-2 mb-12" id="menu-tabs">
+                <button class="menu-tab tab-active px-4 py-2 border border-gold-400/20 text-stone-500 text-[10px] font-semibold tracking-[0.12em] uppercase hover:text-gold-400 hover:border-gold-400/50 transition-all duration-300" data-tab="starters">Starters</button>
+                <button class="menu-tab px-4 py-2 border border-gold-400/20 text-stone-500 text-[10px] font-semibold tracking-[0.12em] uppercase hover:text-gold-400 hover:border-gold-400/50 transition-all duration-300" data-tab="salads">Salads</button>
+                <button class="menu-tab px-4 py-2 border border-gold-400/20 text-stone-500 text-[10px] font-semibold tracking-[0.12em] uppercase hover:text-gold-400 hover:border-gold-400/50 transition-all duration-300" data-tab="soups">Soups</button>
+                <button class="menu-tab px-4 py-2 border border-gold-400/20 text-stone-500 text-[10px] font-semibold tracking-[0.12em] uppercase hover:text-gold-400 hover:border-gold-400/50 transition-all duration-300" data-tab="main">Main</button>
+                <button class="menu-tab px-4 py-2 border border-gold-400/20 text-stone-500 text-[10px] font-semibold tracking-[0.12em] uppercase hover:text-gold-400 hover:border-gold-400/50 transition-all duration-300" data-tab="pasta">Pasta</button>
+                <button class="menu-tab px-4 py-2 border border-gold-400/20 text-stone-500 text-[10px] font-semibold tracking-[0.12em] uppercase hover:text-gold-400 hover:border-gold-400/50 transition-all duration-300" data-tab="baked">Baked</button>
+                <button class="menu-tab px-4 py-2 border border-gold-400/20 text-stone-500 text-[10px] font-semibold tracking-[0.12em] uppercase hover:text-gold-400 hover:border-gold-400/50 transition-all duration-300" data-tab="desserts">Desserts</button>
+                <button class="menu-tab px-4 py-2 border border-gold-400/20 text-stone-500 text-[10px] font-semibold tracking-[0.12em] uppercase hover:text-gold-400 hover:border-gold-400/50 transition-all duration-300" data-tab="cocktails">Cocktails</button>
+                <button class="menu-tab px-4 py-2 border border-gold-400/20 text-stone-500 text-[10px] font-semibold tracking-[0.12em] uppercase hover:text-gold-400 hover:border-gold-400/50 transition-all duration-300" data-tab="wine">Wine & Drinks</button>
+                <button class="menu-tab px-4 py-2 border border-gold-400/20 text-stone-500 text-[10px] font-semibold tracking-[0.12em] uppercase hover:text-gold-400 hover:border-gold-400/50 transition-all duration-300" data-tab="garnish">Garnish & Sauces</button>
+            </div>
+
+            <div id="menu-content" class="max-w-4xl mx-auto"></div>
+        </div>
+    </section>
+
+    <!-- Chef's Highlight -->
+    <section class="py-20 relative overflow-hidden">
+        <div class="absolute inset-0">
+            <img src="images/interior-5.jpg.jpeg" alt="Restaurant exterior" class="w-full h-full object-cover opacity-15 grayscale">
+            <div class="absolute inset-0 bg-gradient-to-r from-dark-600 via-dark-600/95 to-dark-600/80"></div>
+        </div>
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="observe-animate">
+                    <span class="text-[10px] font-medium tracking-[0.3em] uppercase text-gold-400">Chef's Recommendation</span>
+                    <h2 class="mt-4 font-serif text-4xl md:text-5xl font-light tracking-tight text-stone-100">Tseretell Feast</h2>
+                    <div class="divider-gold w-16 my-6"></div>
+                    <p class="text-stone-400 font-light leading-relaxed mb-6">
+                        Our grandest offering — a lavish spread fit for a Georgian supra. Roasted chicken with walnut sauce, eggplant with walnuts, succulent pork barbeque, Imeretian khachapuri, mchadi, fresh cheese, garden salad with herbs, warm bread, and Tseretell mtsvadi assortment.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-8">
+                        <span class="px-3 py-1 border border-gold-400/15 text-gold-400/70 text-[9px] tracking-widest uppercase">Roasted Chicken</span>
+                        <span class="px-3 py-1 border border-gold-400/15 text-gold-400/70 text-[9px] tracking-widest uppercase">Walnut Sauce</span>
+                        <span class="px-3 py-1 border border-gold-400/15 text-gold-400/70 text-[9px] tracking-widest uppercase">Pork BBQ</span>
+                        <span class="px-3 py-1 border border-gold-400/15 text-gold-400/70 text-[9px] tracking-widest uppercase">Khachapuri</span>
+                        <span class="px-3 py-1 border border-gold-400/15 text-gold-400/70 text-[9px] tracking-widest uppercase">Mchadi</span>
+                        <span class="px-3 py-1 border border-gold-400/15 text-gold-400/70 text-[9px] tracking-widest uppercase">Fresh Salad</span>
+                    </div>
+                    <div class="flex items-center gap-4 mb-8">
+                        <span class="font-serif text-3xl text-gold-400">₾100</span>
+                        <span class="text-stone-600 text-xs">for the full feast</span>
+                    </div>
+                    <a href="#reserve" class="group inline-flex items-center gap-3 px-8 py-3.5 bg-gold-400 text-dark-900 text-[11px] font-semibold tracking-[0.15em] uppercase hover:bg-gold-200 transition-all duration-300">
+                        Book This Experience
+                        <iconify-icon icon="ph:arrow-right" class="text-sm transition-transform duration-300 group-hover:translate-x-1"></iconify-icon>
+                    </a>
+                </div>
+                <div class="observe-animate">
+                    <div class="aspect-[4/3] overflow-hidden border border-gold-400/10">
+                        <img src="images/interior-6.jpg" alt="Georgian supra feast" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section id="reviews" class="py-24 md:py-32 relative">
+        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-400/20 to-transparent"></div>
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 observe-animate">
+                <span class="text-[10px] font-medium tracking-[0.3em] uppercase text-gold-400">What They Say</span>
+                <h2 class="mt-4 font-serif text-4xl md:text-5xl font-light tracking-tight text-stone-100">Guest Stories</h2>
+                <div class="mt-6 inline-flex items-center gap-3">
+                    <div class="flex items-center gap-1">
+                        <iconify-icon icon="ph:star-fill" class="text-gold-400"></iconify-icon>
+                        <iconify-icon icon="ph:star-fill" class="text-gold-400"></iconify-icon>
+                        <iconify-icon icon="ph:star-fill" class="text-gold-400"></iconify-icon>
+                        <iconify-icon icon="ph:star-fill" class="text-gold-400"></iconify-icon>
+                        <iconify-icon icon="ph:star-half-fill" class="text-gold-400"></iconify-icon>
+                    </div>
+                    <span class="text-gold-400 font-serif text-xl">4.6</span>
+                    <span class="text-stone-500 text-sm">from 1,099 reviews</span>
+                </div>
+            </div>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="observe-animate p-8 border border-gold-400/10 hover:border-gold-400/25 transition-all duration-500 bg-dark-400/50">
+                    <iconify-icon icon="ph:quotes" class="text-gold-400/30 text-3xl mb-4"></iconify-icon>
+                    <p class="text-stone-300 font-light leading-relaxed mb-6">"Cozy ambiance, attentive and helpful staff, delicious food. One of the best dining experiences in Kutaisi. Every dish was prepared with love."</p>
+                    <div class="flex items-center gap-1 mb-4">
+                        <iconify-icon icon="ph:star-fill" class="text-gold-400 text-xs"></iconify-icon>
+                        <iconify-icon icon="ph:star-fill" class="text-gold-400 text-xs"></iconify-icon>
+                        <iconify-icon icon="ph:star-fill" class="text-gold-400 text-xs"></iconify-icon>
+                        <iconify-icon icon="ph:star-fill" class="text-gold-400 text-xs"></iconify-icon>
+                        <iconify-icon icon="ph:star-fill" class="text-gold-400 text-xs"></iconify-icon>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gold-400/10 flex items-center justify-center">
+                            <iconify-icon icon="ph:user" class="text-gold-400"></iconify-icon>
+                        </div>
+                        <div>
+                            <span class="text-stone-200 text-sm font-medium block">Anna K.</span>
+                            <span class="text-stone-600 text-[10px] tracking-wider uppercase">Google Review</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="observe-animate p-8 border border-gold-400/10 hover:border-gold-400/25 transition-all duration-500 bg-dark-400/50 md:mt-8">
+                    <iconify-icon icon="ph:quotes" class="text-gold-400/30 text-3xl mb-4"></iconify-icon>
+                    <p class="text-stone-300 font-light leading-relaxed mb-6">"The staff are friendly and the service is great. The ambiance is warm and inviting, and the food was gorgeous. Both the wine and beer selection were excellent. A must-visit!"</p>
+                    <div class="flex items-center gap-1 mb-4">
+                        <iconify-icon icon="ph:star-fill" class="text-gold-400 text-xs"></iconify-icon>
+                        <iconify-icon icon="ph:star-fill" class="text-gold-400 text-xs"></iconify-icon>
+                        <iconify-icon icon="ph:star-fill" class="text-gold-400 text-xs"></iconify-icon>
+                        <iconify-icon icon="ph:star-fill" class="text-gold-400 text-xs"></iconify-icon>
+                        <iconify-icon icon="ph:star-fill" class="text-gold-400 text-xs"></iconify-icon>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gold-400/10 flex items-center justify-center">
+                            <iconify-icon icon="ph:user" class="text-gold-400"></iconify-icon>
+                        </div>
+                        <div>
+                            <span class="text-stone-200 text-sm font-medium block">Marco D.</span>
+                            <span class="text-stone-600 text-[10px] tracking-wider uppercase">Google Review</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="observe-animate p-8 border border-gold-400/10 hover:border-gold-400/25 transition-all duration-500 bg-dark-400/50">
+                    <iconify-icon icon="ph:quotes" class="text-gold-400/30 text-3xl mb-4"></iconify-icon>
+                    <p class="text-stone-300 font-light leading-relaxed mb-6">"A hidden gem in Kutaisi. Great service, nice vibes, amazing food and drinks! The shqemeruli was absolutely divine. Can't wait to come back and try more."</p>
+                    <div class="flex items-center gap-1 mb-4">
+                        <iconify-icon icon="ph:star-fill" class="text-gold-400 text-xs"></iconify-icon>
+                        <iconify-icon icon="ph:star-fill" class="text-gold-400 text-xs"></iconify-icon>
+                        <iconify-icon icon="ph:star-fill" class="text-gold-400 text-xs"></iconify-icon>
+                        <iconify-icon icon="ph:star-fill" class="text-gold-400 text-xs"></iconify-icon>
+                        <iconify-icon icon="ph:star-half-fill" class="text-gold-400 text-xs"></iconify-icon>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gold-400/10 flex items-center justify-center">
+                            <iconify-icon icon="ph:user" class="text-gold-400"></iconify-icon>
+                        </div>
+                        <div>
+                            <span class="text-stone-200 text-sm font-medium block">Sophie L.</span>
+                            <span class="text-stone-600 text-[10px] tracking-wider uppercase">Google Review</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-24 md:py-32 relative">
+        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-400/20 to-transparent"></div>
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 observe-animate">
+                <span class="text-[10px] font-medium tracking-[0.3em] uppercase text-gold-400">Visual Journey</span>
+                <h2 class="mt-4 font-serif text-4xl md:text-5xl font-light tracking-tight text-stone-100">Gallery</h2>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 observe-animate">
+                <div class="aspect-square overflow-hidden col-span-2 row-span-2">
+                    <img src="images/interior-1 (1).jpeg" alt="Interior" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700 grayscale-[30%] hover:grayscale-0">
+                </div>
+                <div class="aspect-square overflow-hidden">
+                    <img src="images/interior-2.jpeg" alt="Interior 2" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700 grayscale-[30%] hover:grayscale-0">
+                </div>
+                <div class="aspect-square overflow-hidden">
+                    <img src="images/interior-3.jpeg" alt="Interior 3" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700 grayscale-[30%] hover:grayscale-0">
+                </div>
+                <div class="aspect-square overflow-hidden">
+                    <img src="images/interior-5.jpeg" alt="Interior 4" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700 grayscale-[30%] hover:grayscale-0">
+                </div>
+                <div class="aspect-square overflow-hidden">
+                    <img src="images/interior-4.jpeg" alt="Exterior" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700 grayscale-[30%] hover:grayscale-0">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reservation Section -->
+    <section id="reserve" class="py-24 md:py-32 relative overflow-hidden">
+        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-400/20 to-transparent"></div>
+        <div class="absolute -top-48 -right-48 w-[500px] h-[500px] bg-gold-400/5 rounded-full blur-3xl"></div>
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="observe-animate">
+                    <span class="text-[10px] font-medium tracking-[0.3em] uppercase text-gold-400">Join Us</span>
+                    <h2 class="mt-4 font-serif text-4xl md:text-5xl font-light tracking-tight text-stone-100">
+                        Reserve Your<br><span class="text-gold-400">Table</span>
+                    </h2>
+                    <div class="divider-gold w-16 my-8"></div>
+                    <p class="text-stone-400 font-light leading-relaxed mb-10">
+                        Whether it's an intimate dinner, a celebration with friends, or a solo culinary adventure — we'll set the stage for your story.
+                    </p>
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 border border-gold-400/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <iconify-icon icon="ph:map-pin" class="text-gold-400"></iconify-icon>
+                            </div>
+                            <div>
+                                <span class="text-stone-200 text-sm font-medium block">Location</span>
+                                <span class="text-stone-500 font-light text-sm">Kutaisi, Georgia</span>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 border border-gold-400/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <iconify-icon icon="ph:clock" class="text-gold-400"></iconify-icon>
+                            </div>
+                            <div>
+                                <span class="text-stone-200 text-sm font-medium block">Hours</span>
+                                <span class="text-stone-500 font-light text-sm">Mon–Sun: 12:00 PM – 1:00 AM</span>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 border border-gold-400/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <iconify-icon icon="ph:phone" class="text-gold-400"></iconify-icon>
+                            </div>
+                            <div>
+                                <span class="text-stone-200 text-sm font-medium block">Phone</span>
+                                <span class="text-stone-500 font-light text-sm">+995 551-55-55-10</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="observe-animate">
+                    <form id="reservation-form" class="p-8 md:p-10 border border-gold-400/15 bg-dark-400/50">
+                        <div class="space-y-5">
+                            <div>
+                                <label class="text-[10px] tracking-[0.2em] uppercase text-stone-500 mb-2 block">Full Name</label>
+                                <input type="text" required class="w-full bg-transparent border-b border-gold-400/20 py-3 text-stone-200 font-light focus:outline-none focus:border-gold-400 transition-colors duration-300 placeholder:text-stone-700" placeholder="Your name">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="text-[10px] tracking-[0.2em] uppercase text-stone-500 mb-2 block">Date</label>
+                                    <input type="date" required class="w-full bg-transparent border-b border-gold-400/20 py-3 text-stone-200 font-light focus:outline-none focus:border-gold-400 transition-colors duration-300 [color-scheme:dark]">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] tracking-[0.2em] uppercase text-stone-500 mb-2 block">Time</label>
+                                    <input type="time" required class="w-full bg-transparent border-b border-gold-400/20 py-3 text-stone-200 font-light focus:outline-none focus:border-gold-400 transition-colors duration-300 [color-scheme:dark]">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="text-[10px] tracking-[0.2em] uppercase text-stone-500 mb-2 block">Guests</label>
+                                    <select required class="w-full bg-transparent border-b border-gold-400/20 py-3 text-stone-200 font-light focus:outline-none focus:border-gold-400 transition-colors duration-300 [color-scheme:dark]">
+                                        <option value="" class="bg-dark-600">Select</option>
+                                        <option value="1" class="bg-dark-600">1 Guest</option>
+                                        <option value="2" class="bg-dark-600">2 Guests</option>
+                                        <option value="3-4" class="bg-dark-600">3–4 Guests</option>
+                                        <option value="5-6" class="bg-dark-600">5–6 Guests</option>
+                                        <option value="7+" class="bg-dark-600">7+ Guests</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="text-[10px] tracking-[0.2em] uppercase text-stone-500 mb-2 block">Phone</label>
+                                    <input type="tel" class="w-full bg-transparent border-b border-gold-400/20 py-3 text-stone-200 font-light focus:outline-none focus:border-gold-400 transition-colors duration-300 placeholder:text-stone-700" placeholder="+995...">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="text-[10px] tracking-[0.2em] uppercase text-stone-500 mb-2 block">Special Requests</label>
+                                <textarea rows="3" class="w-full bg-transparent border-b border-gold-400/20 py-3 text-stone-200 font-light focus:outline-none focus:border-gold-400 transition-colors duration-300 resize-none placeholder:text-stone-700" placeholder="Any dietary needs or preferences..."></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="mt-8 w-full py-3.5 bg-gold-400 text-dark-900 text-[11px] font-semibold tracking-[0.15em] uppercase hover:bg-gold-200 transition-all duration-300 flex items-center justify-center gap-3">
+                            Request Reservation
+                            <iconify-icon icon="ph:arrow-right" class="text-sm"></iconify-icon>
+                        </button>
+                        <p class="mt-4 text-center text-stone-600 text-[10px] tracking-wider">WE'LL CONFIRM YOUR RESERVATION VIA PHONE</p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact / Map Section -->
+    <section id="contact" class="py-16 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="border border-gold-400/10 overflow-hidden">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d47248.67513368976!2d42.688!3d42.268!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x405d1f9c3c3c3c3b%3A0x3c3c3c3c3c3c3c3c!2sKutaisi%2C%20Georgia!5e0!3m2!1sen!2sge!4v1700000000000!5m2!1sen!2sge" width="100%" height="350" style="border:0; filter: grayscale(80%) invert(92%) contrast(90%); opacity: 0.6;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-16 bg-dark-900 border-t border-gold-400/10 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-12 mb-16">
+                <div class="md:col-span-1">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 rounded-full border border-gold-400/40 flex items-center justify-center">
+                            <iconify-icon icon="ph:fork-knife" class="text-gold-400 text-lg"></iconify-icon>
+                        </div>
+                        <span class="font-serif text-2xl font-semibold text-stone-100">Story</span>
+                    </div>
+                    <p class="text-stone-500 font-light text-sm leading-relaxed mb-6">Create Your Story Here.<br>Bar · Restaurant</p>
+                    <div class="flex items-center gap-4">
+                        <a href="#" class="w-9 h-9 border border-gold-400/20 flex items-center justify-center hover:border-gold-400/60 hover:bg-gold-400/5 transition-all duration-300">
+                            <iconify-icon icon="mdi:instagram" class="text-gold-400/70 text-sm"></iconify-icon>
+                        </a>
+                        <a href="#" class="w-9 h-9 border border-gold-400/20 flex items-center justify-center hover:border-gold-400/60 hover:bg-gold-400/5 transition-all duration-300">
+                            <iconify-icon icon="mdi:facebook" class="text-gold-400/70 text-sm"></iconify-icon>
+                        </a>
+                        <a href="#" class="w-9 h-9 border border-gold-400/20 flex items-center justify-center hover:border-gold-400/60 hover:bg-gold-400/5 transition-all duration-300">
+                            <iconify-icon icon="mdi:tripadvisor" class="text-gold-400/70 text-sm"></iconify-icon>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-[10px] font-semibold tracking-[0.2em] uppercase text-gold-400 mb-6">Navigate</h4>
+                    <div class="space-y-3">
+                        <a href="#about" class="block text-stone-500 text-sm font-light hover:text-gold-400 transition-colors duration-300">About</a>
+                        <a href="#menu" class="block text-stone-500 text-sm font-light hover:text-gold-400 transition-colors duration-300">Menu</a>
+                        <a href="#reviews" class="block text-stone-500 text-sm font-light hover:text-gold-400 transition-colors duration-300">Reviews</a>
+                        <a href="#gallery" class="block text-stone-500 text-sm font-light hover:text-gold-400 transition-colors duration-300">Gallery</a>
+                        <a href="#reserve" class="block text-stone-500 text-sm font-light hover:text-gold-400 transition-colors duration-300">Reservations</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-[10px] font-semibold tracking-[0.2em] uppercase text-gold-400 mb-6">Hours</h4>
+                    <div class="space-y-3 text-sm font-light">
+                        <div class="flex justify-between text-stone-500"><span>Monday – Thursday</span><span class="text-stone-400">12:00  – 1:00   </span></div>
+                        <div class="flex justify-between text-stone-500"><span>Friday – Saturday</span><span class="text-stone-400">12:00 – 1:00</span></div>
+                        <div class="flex justify-between text-stone-500"><span>Sunday</span><span class="text-stone-400">12:00 – 1:00</span></div>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-[10px] font-semibold tracking-[0.2em] uppercase text-gold-400 mb-6">Contact</h4>
+                    <div class="space-y-3 text-sm font-light text-stone-500">
+                        <p>Kutaisi, Georgia</p>
+                        <p> </p>
+                        <p>+995 551-55-55-10</p>
+                    </div>
+                </div>
+            </div>
+            <div class="divider-gold mb-8"></div>
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <span class="text-stone-600 text-xs font-light">© 2025 Story Bar · Restaurant. All rights reserved.</span>
+                <span class="text-stone-700 text-[10px] tracking-widest uppercase font-light">Create Your Story Here</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top -->
+    <button id="back-to-top" class="fixed bottom-8 right-8 w-12 h-12 border border-gold-400/30 bg-dark-600/90 backdrop-blur-sm flex items-center justify-center z-40 hover:bg-gold-400 hover:text-dark-900 text-gold-400 transition-all duration-300 opacity-0 pointer-events-none">
+        <iconify-icon icon="ph:caret-up" class="text-lg"></iconify-icon>
+    </button>
+
+    <script>
+        // ============ FULL MENU DATA ============
+        const menuData = {
+            starters: {
+                title: "Starters",
+                items: [
+                    { name: "Imeretian Cheese Board", nameKa: "იმერული ყველის დაფა", desc: "Imeruli, sulguni and smoked cheeses", price: "25" },
+                    { name: "European Cheese Board", nameKa: "ევროპული ყველის დაფა", desc: "Blue cheese, cheddar and mozzarella cheeses, honey", price: "33" },
+                    { name: "Gebjalia", nameKa: "გებჟალია", desc: "Sulguni cheese, sour cream, mint", price: "20", tag: "Traditional" },
+                    { name: "Pkhali Board", nameKa: "ფხალის დაფა", desc: "Spinach, red pkhali, eggplant, pumpkin corn bread, vinegar, herbs, jonjoli (walnuts, corn flour, cheese)", price: "25" },
+                    { name: "Adjapsandali", nameKa: "აჯაფსანდალი", desc: "Eggplant, sweet peppers, tomato, fresh herbs (sulguni cheese, corn flour)", price: "15", tag: "Vegetarian" },
+                    { name: "Eggplant with Walnuts", nameKa: "ბადრიჯანი ნიგვზით", desc: "Eggplant, walnuts, onion, coriander, vinegar, garlic", price: "15", tag: "Traditional" },
+                ]
+            },
+            salads: {
+                title: "Salads",
+                items: [
+                    { name: "Caesar Salad", nameKa: "კეისარი", desc: "Chicken fillet, lettuce, tomato, sauce, parmesan, crispy bread", price: "20" },
+                    { name: "Hot Tarragon Salad", nameKa: "ცხელი ტარხუნის სალათი", desc: "Salad mix, tomato, chicken fillet, tarragon (cream)", price: "22" },
+                    { name: "Love Story Salad", nameKa: "საფირმო სალათი „Love Story“", desc: "Salad mix, orange, cucumber, tomatoes, egg, shrimp, sauce, sesame", price: "25", tag: "Signature" },
+                    { name: "Cucumber & Tomato Salad", nameKa: "კიტრი-პომიდვრის სალათი", desc: "Cucumber, tomato, onion, vinegar, herbs", price: "9" },
+                    { name: "Cucumber & Tomato Salad with Walnuts", nameKa: "კიტრი-პომიდვრის სალათი ნიგვზით", desc: "Cucumber, tomato, walnuts, onion, vinegar, herbs", price: "12" },
+                ]
+            },
+            soups: {
+                title: "Soups",
+                items: [
+                    { name: "Cream of Mushroom Soup", nameKa: "სოკოს კრემსუპი", desc: "Mushroom, cream, onion, potatoes, crispy bread", price: "15" },
+                    { name: "Chikhirtma", nameKa: "ჩიხირთმა", desc: "Chicken bouillon, egg, flour, coriander, vinegar, garlic", price: "15", tag: "Traditional" },
+                    { name: "Chakapuli", nameKa: "ჩაქაფული", desc: "Salad mix, tarragon, veal, wine, lime", price: "19" },
+                    { name: "Broccoli Cream Soup", nameKa: "ბროკოლის კრემსუპი", desc: "Broccoli, onion, potatoes, cream, crispy bread", price: "15" },
+                ]
+            },
+            main: {
+                title: "Main Course",
+                items: [
+                    { name: "Lobio on the Fire with Jonjoli Chips", nameKa: "ლობიო კოცონზე ჯონჯოლის მწნილის ჩიფსით", desc: "Seasoned beans with jonjoli chips, onion, garlic, herbs, spices", price: "12", tag: "Vegetarian" },
+                    { name: "Chicken Bust", nameKa: "ჩიქენ ბასტი", desc: "Chicken fillet, lettuce, berries, orange, pear, apple, tomato, cucumber, parmesan, parsley, honey, balsamic vinegar", price: "27" },
+                    { name: "Elarji", nameKa: "ელარჯი", desc: "Corn flour, sulguni cheese, cream", price: "21", tag: "Traditional" },
+                    { name: "Chef's Signature", nameKa: "საფირმო შეფისგან", desc: "Pork, herbs, sulguni, cream, eggs, flour, vinegar, black pepper, potatoes", price: "30", tag: "Signature" },
+                    { name: "Shkmeruli", nameKa: "შქმერული", desc: "Chicken, sour cream and garlic, coriander, pomegranate", price: "30", tag: "Must Try" },
+                    { name: "Pork Mtsvadi with Red Beets Garnish", nameKa: "ღორის მწვადი წითელი ჭარხლის გარნირით", desc: "Pork, basil, coriander, tkemali/sour plum, onion", price: "23" },
+                    { name: "Mussels", nameKa: "მიდიები", desc: "Mussels, cream, ginger, lime, coriander, white wine, garlic, pepper, bread", price: "38" },
+                    { name: "Pork with Cherry Sweet & Sour Sauce", nameKa: "ღორის ხორცი ალუბლის ტკბილ-მჟავე სოუსით", desc: "Pork ribs, cherry, crispbread", price: "28" },
+                    { name: "Chicken Schnitzel", nameKa: "ქათმის შნიცელი", desc: "Chicken, mozzarella, cream, potato, eggs, flour, sulguni, herbs, garlic", price: "22" },
+                    { name: "Thai Chicken with Rice", nameKa: "ქათამი ტაილანდურად, ბრინჯით", desc: "Chicken fillet, sauce, red pepper, sesame, zucchini, carrots", price: "21" },
+                    { name: "Burger Story Meal", nameKa: "ბურგერ სთორი მილ", desc: "Chicken fillet, egg, flour, spinach, tomato, special sauce, cheddar, balsamic vinegar, honey, fries, ketchup", price: "20", tag: "Signature" },
+                    { name: "Risotto with Shrimp", nameKa: "რიზოტო კრევეტებით", desc: "Rice, sulguni, cream, peas, tarragon", price: "32" },
+                    { name: "Smoked Bean Balls", nameKa: "შებოლილი ლობიოს ბურთულები", desc: "Egg, flour, sulguni, Imeretian adjika, pomegranate, herb sauce", price: "20" },
+                    { name: "Tenderized Meat with Mushroom & Cream Sauce", nameKa: "დანაზავები ხორცი თეთრი სოკოს და ნაღების სოუსში", desc: "Pork, mushroom, cream, tomato, basil, onion, spices, bread", price: "30" },
+                    { name: "Family Dish", nameKa: "საოჯახო ხორცი", desc: "Pork, pumpkin, bulgarian, truffle, potatoes", price: "23" },
+                    { name: "Cheese Chef", nameKa: "ჩიზ შეფი", desc: "Sulguni, grinding sauce, sephanel, egg", price: "30" },
+                    { name: "Salmon Steak with Cream & Caviar Sauce", nameKa: "ორაგულის სტეიკი ნაღების და ხიზილალის სოუსით", desc: "Salmon with a luxurious cream and caviar sauce", price: "35", tag: "Signature" },
+                    { name: "Tseretell Feast", nameKa: "წერეთლის ნადიმი", desc: "Roasted chicken, walnut sauce, eggplant with walnuts, pork BBQ, Imeretian khachapuri, mchadi, cheese, salad, bread, Tseretelli mtsvadi", price: "100", tag: "Feast" },
+                ]
+            },
+            pasta: {
+                title: "Pasta",
+                items: [
+                    { name: "Carbonara", nameKa: "კარბონარა", desc: "Pasta, cream, egg, Parmesan, ham", price: "17" },
+                    { name: "Pasta Shkmeruli", nameKa: "პასტა შქმერული", desc: "Chicken, pasta, sauce, Parmesan, pomegranate, herbs, cream, garlic", price: "17", tag: "Must Try" },
+                    { name: "Pasta with 4 Cheeses", nameKa: "პასტა 4 ყველით", desc: "Cheddar, mozzarella, Parmesan, blue cheese, cream", price: "20" },
+                    { name: "Seafood Pasta", nameKa: "ზღვის პროდუქტების პასტა", desc: "Mussels, shrimp, salmon, mackerel, cream, black pepper", price: "35", tag: "Signature" },
+                ]
+            },
+            baked: {
+                title: "Baked & From the Oven",
+                items: [
+                    { name: "Imeretian Khachapuri", nameKa: "იმერული ხაჭაპური", desc: "Wheat flour, cheese", price: "16", tag: "Traditional" },
+                    { name: "Adjarian Khachapuri", nameKa: "აჭარული ხაჭაპური", desc: "Flour, cheese, egg, sulguni, butter", price: "18", tag: "Must Try" },
+                    { name: "Chef's Special Khachapuri", nameKa: "საფირმო ხაჭაპური", desc: "Flour, sulguni, cheese, egg", price: "20", tag: "Signature" },
+                    { name: "Three Cheese Khachapuri", nameKa: "სამი ყველის ხაჭაპური", desc: "Wheat flour, sulguni, smoked sulguni, Imeretian cheese", price: "20" },
+                    { name: "Imeretian Lobiani", nameKa: "იმერული ლობიანი", desc: "Wheat flour, beans, onion, cinnamon, spices", price: "13", tag: "Vegetarian" },
+                    { name: "Lobiani with Bacon", nameKa: "ლობიანი ბეკონით", desc: "Wheat flour, beans, bacon, cinnamon, black pepper, onion", price: "16" },
+                    { name: "Pizza Margherita", nameKa: "პიცა მარგარიტა", desc: "Wheat flour, tomato, mozzarella", price: "18" },
+                    { name: "Pepperoni Pizza", nameKa: "პიცა პეპერონი", desc: "Wheat flour, tomato, pepperoni, mozzarella, jalapeño", price: "24" },
+                    { name: "4-Cheese Pizza", nameKa: "პიცა 4 ყველი", desc: "Wheat flour, mozzarella, blue cheese, cheddar, Parmesan, cream", price: "28" },
+                    { name: "Vegan Pizza", nameKa: "ვეგანური პიცა", desc: "Wheat flour, zucchini, tomatoes, bell peppers, mushroom, basil pesto", price: "18", tag: "Vegetarian" },
+                    { name: "Bread", nameKa: "პური", desc: "Freshly baked wheat flour bread", price: "3" },
+                    { name: "Mchadi", nameKa: "მჭადი", desc: "Traditional corn flour bread", price: "4", tag: "Traditional" },
+                    { name: "Chvishtari", nameKa: "ჭვიშტარი", desc: "Corn flour, egg, sulguni", price: "7" },
+                    { name: "Chvishtari with Yogurt Sauce", nameKa: "ჭვიშტარი მაწვნის ცივი სოუსით", desc: "Corn flour, egg, sulguni, matsoni (yogurt), mint", price: "13", tag: "Must Try" },
+                ]
+            },
+            desserts: {
+                title: "Desserts & Seasonal",
+                sections: [
+                    {
+                        subtitle: "Desserts",
+                        items: [
+                            { name: "Sweet Gebjalia", nameKa: "ტკბილი გებჟალია", desc: "Sulguni, cottage cheese, orange, sauce: mint, pomegranate, tarragon, almond", price: "20", tag: "Signature" },
+                            { name: "Brownie with Ice Cream", nameKa: "ბრაუნი ნაყინით", desc: "Butter, chocolate, flour, egg", price: "14" },
+                            { name: "Apple Strudel", nameKa: "ვაშლის შტრუდელი", desc: "Flour, egg, apple, raisins, walnuts", price: "16" },
+                            { name: "Drunk Pear", nameKa: "მთვრალი მსხალი", desc: "Pear, red wine, almond, cream, egg, biscuits, berries, nutmeg sauce", price: "20", tag: "Must Try" },
+                            { name: "Ice Cream", nameKa: "ნაყინი", desc: "Premium ice cream", price: "6" },
+                        ]
+                    },
+                    {
+                        subtitle: "Seasonal",
+                        items: [
+                            { name: "Cold Yogurt Soup", nameKa: "მაწვნის ცივი სუპი", desc: "Cucumber, sour cream, egg, green onion, bacon", price: "12" },
+                            { name: "Wood Mushroom", nameKa: "ხის სოკო", desc: "Mushroom, tarragon, sauce, cabbage, Parmesan, milk", price: "25" },
+                            { name: "Watermelon & Melon", nameKa: "საზამთრო, ნესვი", desc: "Fresh watermelon and melon slices", price: "20" },
+                            { name: "Hot Chocolate", nameKa: "ცხელი შოკოლადი", desc: "Rich hot chocolate", price: "13" },
+                            { name: "New Potato", nameKa: "ახალი კარტოფილი", desc: "Fennel, tkemali", price: "14" },
+                            { name: "Special Mulled Wine", nameKa: "საფირმო გლინტვეინი", desc: "Warm spiced wine", price: "20" },
+                            { name: "Iced Coffee with Ice Cream", nameKa: "ცივი ყავა ნაყინით", desc: "Cold coffee topped with ice cream", price: "13" },
+                        ]
+                    }
+                ]
+            },
+            cocktails: {
+                title: "Cocktails",
+                sections: [
+                    {
+                        subtitle: "Story Signature Cocktails",
+                        items: [
+                            { name: "STORY Special Cocktail", nameKa: "საფირმო კოქტეილი „STORY“", price: "21", tag: "Signature" },
+                            { name: "Martin Scorsese", nameKa: "მარტინ სკორსეზე", price: "20" },
+                            { name: "Green Summer", nameKa: "მწვანე ზაფხული", price: "21" },
+                            { name: "Hand of God", nameKa: "ღმერთის ხელი", price: "20", tag: "Must Try" },
+                            { name: "Special Mulled Wine", nameKa: "საფირმო გლინტვეინი", price: "20" },
+                            { name: "Heaven's Door", nameKa: "სამოთხის კარი", price: "20" },
+                            { name: "The Lamp", nameKa: "ლამპარი", price: "20" },
+                            { name: "Black Key", nameKa: "შავი გასაღები", price: "20" },
+                            { name: "You Can Dance", nameKa: "შენ შეგიძლია იცეკვო", price: "21" },
+                            { name: "Telescope", nameKa: "ტელესკოპი", price: "21" },
+                        ]
+                    },
+                    {
+                        subtitle: "Classic Cocktails",
+                        items: [
+                            { name: "Mojito", nameKa: "მოხიტო", price: "17" },
+                            { name: "Gin & Tonic", nameKa: "ჯინ ტონიკი", price: "17" },
+                            { name: "Gin & Tonic Hendricks", nameKa: "ჯინ ტონიკი ჰენდრიქსი", price: "19" },
+                            { name: "Cuba Libre", nameKa: "კუბა ლიბრე", price: "17" },
+                            { name: "Piña Colada", nameKa: "პინა კოლადა", price: "17" },
+                            { name: "Long Island", nameKa: "ლონგ აილენდი", price: "25" },
+                            { name: "Long Island Energy", nameKa: "ლონგ აილენდ ენერჯი", price: "25" },
+                            { name: "Aperol Spritz", nameKa: "აპეროლ სპრიცი", price: "17" },
+                            { name: "Vodka Red Bull", nameKa: "არაყი რედბული", price: "17" },
+                            { name: "Jäger Bomb", nameKa: "იაგერ ბომბი", price: "17" },
+                            { name: "Old Fashioned", nameKa: "ოლდფეშენი", price: "17" },
+                            { name: "Whisky Sour", nameKa: "ვისკი საუერი", price: "17" },
+                            { name: "Negroni", nameKa: "ნეგრონი", price: "17" },
+                        ]
+                    }
+                ]
+            },
+            wine: {
+                title: "Wine & Drinks",
+                sections: [
+                    {
+                        subtitle: "Wine — Winemaking Chelti",
+                        items: [
+                            { name: "Kisi White Dry", nameKa: "ქისი კლასიკური მშრალი", price: "12 / 50" },
+                            { name: "Khikhvi White Dry", nameKa: "ხიხვი კლასიკური მშრალი", price: "12 / 60" },
+                            { name: "Tsitska-Trakhuna White Semi-Dry", nameKa: "ცისკა-ცოლიკოური ნახ.მშრალი", price: "12 / 55" },
+                            { name: "Kindzmarauli Red Semi-Sweet", nameKa: "ქინძმარაული ნახ.ტკბილი", price: "12 / 55" },
+                            { name: "Saperavi Red Dry (Qvevri)", nameKa: "საფერავი ქვევრი მშრალი", price: "13 / 60" },
+                            { name: "Saperavi Rosé Dry", nameKa: "საფერავი როზე მშრალი", price: "9 / 32" },
+                            { name: "Tsinandali White Dry", nameKa: "წინანდალი თეთრი მშრალი", price: "9 / 40" },
+                            { name: "Mukuzani Red Dry", nameKa: "მუკუზანი წითელი მშრალი", price: "13 / 56" },
+                            { name: "Tipsy Baby White Semi-Sweet", nameKa: "თიფსი ბეიბი თეთრი ნახ. ტკბილი", price: "9 / 30" },
+                        ]
+                    },
+                    {
+                        subtitle: "Wine — Winery Amosa",
+                        items: [
+                            { name: "Saperavi Red Dry", nameKa: "საფერავი მშრალი", price: "10 / 40" },
+                            { name: "Kindzmarauli Red Semi-Sweet", nameKa: "ქინძმარაული ნახ.ტკბილი", price: "11 / 45" },
+                            { name: "Alazani Valley Red Semi-Sweet", nameKa: "ალაზნის ველი წითელი ნახ.ტკბილი", price: "9 / 33" },
+                            { name: "Alazani Valley White Semi-Sweet", nameKa: "ალაზნის ველი თეთრი ნახ.ტკბილი", price: "8 / 28" },
+                            { name: "White Dry Wine", nameKa: "თეთრი მშრალი", price: "13 / 55" },
+                            { name: "Tvishi White Semi-Sweet", nameKa: "ტვიში ნახ.ტკბილი", price: "11 / 40" },
+                        ]
+                    },
+                    {
+                        subtitle: "Wine — Family Winery Nioseb",
+                        items: [
+                            { name: "Tsitska White Dry", nameKa: "ცისკა თეთრი მშრალი", price: "15 / 70" },
+                            { name: "Otskhanuri Saphere Red Dry", nameKa: "ოცხანური საფერე წითელი მშრალი", price: "25 / 120" },
+                            { name: "Lilia White Semi-Sweet", nameKa: "ლილია თეთრი ნახ.ტკბილი", price: "18 / 80" },
+                        ]
+                    },
+                    {
+                        subtitle: "Wine — Winery Pheradze & Sparkling",
+                        items: [
+                            { name: "Tsolikouri", nameKa: "ცოლიკოური", price: "70" },
+                            { name: "Sparkling Wine", nameKa: "ცქრიალა ღვინო", price: "30" },
+                        ]
+                    },
+                    {
+                        subtitle: "Whiskey",
+                        items: [
+                            { name: "Glenfiddich", nameKa: "გლენფიდიხი", price: "0.05 – 20 | 1L – 400" },
+                            { name: "Chivas Regal", nameKa: "ჩივას რეგალი", price: "0.05 – 16 | 1L – 260" },
+                            { name: "Jim Beam Classic", nameKa: "ჯიმ ბიმი კლასიკი", price: "0.05 – 14 | 1L – 200" },
+                            { name: "Jack Honey", nameKa: "ჯეკ თაფლი", price: "0.05 – 14 | 1L – 200" },
+                            { name: "Jameson", nameKa: "ჯეიმსონი", price: "0.05 – 14 | 1L – 200" },
+                            { name: "Jack Daniel's", nameKa: "ჯეკ დენიელსი", price: "0.05 – 14 | 1L – 190" },
+                            { name: "Johnnie Walker", nameKa: "ჯონი ვოლქერი", price: "0.05 – 14 | 1L – 180" },
+                            { name: "J&B", nameKa: "ბრენდები", price: "0.05 – 9 | 1L – 120" },
+                        ]
+                    },
+                    {
+                        subtitle: "Brandy & Cognac",
+                        items: [
+                            { name: "Sarajishvili VS", nameKa: "სარაჯიშვილი VS", price: "0.05 – 8 | 0.5L – 80" },
+                            { name: "Sarajishvili VSOP", nameKa: "სარაჯიშვილი VSOP", price: "0.05 – 9 | 0.5L – 130" },
+                            { name: "Sarajishvili 5★", nameKa: "სარაჯიშვილი 5*", price: "0.05 – 7 | 0.5L – 50" },
+                            { name: "Home Made Cognac", nameKa: "ჩამოსასხმელი კონიაკი", price: "0.05 – 4 | 0.5L – 25" },
+                            { name: "Hennessy VS", nameKa: "ჰენესი VS", price: "0.05 – 30 | 1L – 350" },
+                        ]
+                    },
+                    {
+                        subtitle: "Tequila",
+                        items: [
+                            { name: "Sierra Blanco", nameKa: "სიერა ბლანკო", price: "10" },
+                            { name: "Olmeca Blanco", nameKa: "ოლმეკა ბლანკო", price: "12" },
+                            { name: "Olmeca Gold", nameKa: "ოლმეკა გოლდი", price: "15" },
+                        ]
+                    },
+                    {
+                        subtitle: "Rum",
+                        items: [
+                            { name: "Bacardi Blanco", nameKa: "ბაკარდი ბლანკო", price: "9" },
+                            { name: "Bacardi Black", nameKa: "ბაკარდი შავი", price: "11" },
+                            { name: "Malibu", nameKa: "მალიბუ", price: "8" },
+                            { name: "Stroh", nameKa: "შტრო", price: "10" },
+                        ]
+                    },
+                    {
+                        subtitle: "Gin",
+                        items: [
+                            { name: "Gordon's", nameKa: "გორდონსი", price: "7" },
+                            { name: "Hendrick's", nameKa: "ჰენდრიქსი", price: "12" },
+                        ]
+                    },
+                    {
+                        subtitle: "Vodka",
+                        items: [
+                            { name: "Nemiroff", nameKa: "ნემიროვი", price: "0.05 – 5 | 0.5L – 30" },
+                            { name: "Absolut", nameKa: "აბსოლუტი", price: "0.05 – 7 | 0.5L – 55 | 1L – 95" },
+                            { name: "Finlandia", nameKa: "ფინლანდია", price: "0.05 – 6 | 0.5L – 50 | 1L – 90" },
+                        ]
+                    },
+                    {
+                        subtitle: "Liqueurs",
+                        items: [
+                            { name: "Aperol", nameKa: "აპეროლი", price: "7" },
+                            { name: "Baileys", nameKa: "ბეილისი", price: "10" },
+                            { name: "Cointreau", nameKa: "კუანტრო", price: "9" },
+                            { name: "Amaretto Disaronno", nameKa: "ამარეტო დიზარონო", price: "10" },
+                            { name: "Jägermeister", nameKa: "იაგერმაისტერი", price: "0.05 – 8 | 0.5L – 60 | 1L – 115" },
+                        ]
+                    },
+                    {
+                        subtitle: "Vermouth",
+                        items: [
+                            { name: "Martini Bianco", nameKa: "მარტინი ბიანკო", price: "10" },
+                            { name: "Martini Rosat", nameKa: "მარტინი როსატო", price: "10" },
+                        ]
+                    },
+                    {
+                        subtitle: "Beer",
+                        items: [
+                            { name: "ARGO", nameKa: "არგო", price: "7" },
+                            { name: "Corona Extra", nameKa: "კორონა ექსტრა", price: "11" },
+                            { name: "Estrella", nameKa: "ესტრელა", price: "7" },
+                            { name: "Stout Black Craft", nameKa: "სტაუტი შავი კრაფტი", price: "12" },
+                            { name: "APPA Craft Beer", nameKa: "აპა კრაფტ ლუდი", price: "10" },
+                        ]
+                    },
+                    {
+                        subtitle: "Refreshing Drinks",
+                        items: [
+                            { name: "Water", nameKa: "წყალი", price: "2.50" },
+                            { name: "Nabeglavi (Sparkling Water)", nameKa: "ნაბეღლავი", price: "3" },
+                            { name: "Coca-Cola", nameKa: "კოკა-კოლა", price: "3" },
+                            { name: "Fanta", nameKa: "ფანტა", price: "3" },
+                            { name: "Red Bull", nameKa: "რედბული", price: "10" },
+                            { name: "Juice", nameKa: "წვენი", price: "5" },
+                            { name: "Juice (1 Liter)", nameKa: "წვენი 1 ლ", price: "12" },
+                            { name: "Homemade Lemonade (1L)", nameKa: "ლიმონათი 1ლ", price: "13" },
+                            { name: "Homemade Lemonade (Glass)", nameKa: "ლიმონათი ჭიქით", price: "7" },
+                            { name: "Special Lemonade", nameKa: "საფირმო ლიმონათი", price: "15", tag: "Signature" },
+                        ]
+                    },
+                    {
+                        subtitle: "Coffee & Tea",
+                        items: [
+                            { name: "Espresso", nameKa: "ესპრესო", price: "4" },
+                            { name: "Americano", nameKa: "ამერიკანო", price: "5" },
+                            { name: "Cappuccino", nameKa: "კაპუჩინო", price: "7" },
+                            { name: "Latte", nameKa: "ლატე", price: "8" },
+                            { name: "Iced Coffee", nameKa: "ცივი ყავა", price: "7" },
+                            { name: "Tea", nameKa: "ჩაი", price: "5" },
+                            { name: "Tea (Teapot)", nameKa: "ჩაი ჩაიდანით", price: "10" },
+                        ]
+                    }
+                ]
+            },
+            garnish: {
+                title: "Garnish & Sauces",
+                sections: [
+                    {
+                        subtitle: "Garnish",
+                        items: [
+                            { name: "French Fries", nameKa: "ფრი", desc: "Potatoes with sauce", price: "8" },
+                            { name: "Mashed Potatoes", nameKa: "პიურე", desc: "Potatoes, milk, butter", price: "5" },
+                            { name: "Mashed Potatoes with Cheese", nameKa: "პიურე ყველით", desc: "Potatoes, cheese, milk, butter", price: "8" },
+                            { name: "Rice with Vegetables", nameKa: "ბრინჯი ბოსტნეულით", desc: "Rice, mushrooms, sweet pepper, sauce, tomato, broccoli", price: "10" },
+                            { name: "Crispy Bread", nameKa: "ხრაშუნა პური", price: "5" },
+                            { name: "Nuts", nameKa: "თხილეული", desc: "Walnuts, almonds, pumpkin seeds", price: "15" },
+                        ]
+                    },
+                    {
+                        subtitle: "Sauces",
+                        items: [
+                            { name: "Tkemali", nameKa: "ტყემალი", desc: "Traditional Georgian sauce from sour plum", price: "3", tag: "Traditional" },
+                            { name: "Narsharab", nameKa: "ნარშარაბი", desc: "Pomegranate molasses sauce", price: "4" },
+                            { name: "Ketchup", nameKa: "კეტჩუპი", price: "3" },
+                            { name: "Sour Cream", nameKa: "არაჟანი", price: "3" },
+                            { name: "Mexican Sauce", nameKa: "მექსიკური სოუსი", price: "3" },
+                            { name: "Georgian Walnut Sauce (Baje)", nameKa: "ბაჟე სოუსი", desc: "Walnut, olive oil, salt, garlic, vinegar", price: "6", tag: "Traditional" },
+                        ]
+                    }
+                ]
+            }
+        };
+
+        // ============ RENDER MENU ============
+        function renderMenu(tab) {
+            const container = document.getElementById('menu-content');
+            const data = menuData[tab];
+            let html = '';
+
+            if (data.items) {
+                html += `<div class="menu-section">`;
+                html += `<h3 class="font-serif text-2xl text-gold-400 mb-8 text-center">${data.title}</h3>`;
+                html += `<div class="space-y-0">`;
+                data.items.forEach(item => { html += renderMenuItem(item); });
+                html += `</div></div>`;
+            }
+
+            if (data.sections) {
+                data.sections.forEach(section => {
+                    html += `<div class="menu-section mb-12">`;
+                    html += `<h3 class="font-serif text-xl text-gold-400 mb-6 text-center tracking-wide">${section.subtitle}</h3>`;
+                    html += `<div class="space-y-0">`;
+                    section.items.forEach(item => { html += renderMenuItem(item); });
+                    html += `</div></div>`;
+                });
+            }
+
+            container.innerHTML = html;
+
+            const items = container.querySelectorAll('.menu-item');
+            items.forEach((item, i) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(15px)';
+                setTimeout(() => {
+                    item.style.transition = 'all 0.5s ease-out';
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                }, i * 40);
+            });
+        }
+
+        function renderMenuItem(item) {
+            const tagHtml = item.tag ? `<span class="ml-2 px-2 py-0.5 text-[7px] tracking-[0.15em] uppercase border ${
+                item.tag === 'Signature' ? 'border-gold-400/40 text-gold-400' :
+                item.tag === 'Must Try' ? 'border-amber-400/40 text-amber-400' :
+                item.tag === 'Traditional' ? 'border-emerald-400/30 text-emerald-400' :
+                item.tag === 'Vegetarian' ? 'border-green-400/30 text-green-400' :
+                item.tag === 'Feast' ? 'border-rose-400/30 text-rose-400' :
+                'border-stone-600 text-stone-500'
+            }">${item.tag}</span>` : '';
+
+            const descHtml = item.desc ? `<p class="text-stone-600 text-[11px] font-light mt-0.5 leading-relaxed">${item.desc}</p>` : '';
+            const nameKaHtml = item.nameKa ? `<div class="text-stone-600 text-[10px] font-light mt-0.5">${item.nameKa}</div>` : '';
+
+            return `
+                <div class="menu-item group py-3.5 border-b border-gold-400/5 hover:border-gold-400/15 transition-all duration-300 px-2 hover:px-4">
+                    <div class="flex items-baseline justify-between gap-2">
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center flex-wrap gap-y-1">
+                                <span class="text-stone-200 font-light group-hover:text-gold-200 transition-colors duration-300 text-sm">${item.name}</span>
+                                ${tagHtml}
+                            </div>
+                            ${nameKaHtml}
+                            ${descHtml}
+                        </div>
+                        <div class="flex items-center gap-2 flex-shrink-0 ml-3">
+                            <span class="text-gold-400/80 font-serif text-sm whitespace-nowrap">₾${item.price}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ============ MENU TABS ============
+        document.querySelectorAll('.menu-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('tab-active'));
+                tab.classList.add('tab-active');
+                renderMenu(tab.dataset.tab);
+            });
+        });
+
+        renderMenu('starters');
+
+        // ============ MOBILE MENU ============
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        let menuOpen = false;
+
+        mobileMenuBtn.addEventListener('click', () => {
+            menuOpen = !menuOpen;
+            mobileMenu.classList.toggle('hidden');
+            document.body.style.overflow = menuOpen ? 'hidden' : '';
+        });
+
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => {
+                menuOpen = false;
+                mobileMenu.classList.add('hidden');
+                document.body.style.overflow = '';
+            });
+        });
+
+        // ============ NAVBAR SCROLL ============
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('nav-scrolled', window.scrollY > 80);
+        });
+
+        // ============ BACK TO TOP ============
+        const backToTop = document.getElementById('back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 600) {
+                backToTop.style.opacity = '1';
+                backToTop.style.pointerEvents = 'auto';
+            } else {
+                backToTop.style.opacity = '0';
+                backToTop.style.pointerEvents = 'none';
+            }
+        });
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // ============ INTERSECTION OBSERVER ============
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { rootMargin: '0px 0px -80px 0px', threshold: 0.1 });
+
+        document.querySelectorAll('.observe-animate').forEach(el => observer.observe(el));
+
+        // ============ RESERVATION FORM ============
+        document.getElementById('reservation-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            showToast('Thank you! Your reservation request has been sent. We\'ll confirm via phone shortly.', 'success');
+            e.target.reset();
+        });
+
+        // ============ TOAST ============
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast glass-dark px-6 py-4 max-w-sm flex items-start gap-3';
+            const icon = type === 'success' ? 'ph:check-circle' : 'ph:info';
+            const iconColor = type === 'success' ? 'text-emerald-400' : 'text-gold-400';
+            toast.innerHTML = `
+                <iconify-icon icon="${icon}" class="${iconColor} text-lg mt-0.5 flex-shrink-0"></iconify-icon>
+                <span class="text-stone-200 text-sm font-light">${message}</span>
+            `;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.transition = 'all 0.5s ease-out';
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(20px)';
+                setTimeout(() => toast.remove(), 500);
+            }, 5000);
+        }
+
+        // ============ SMOOTH SCROLL ============
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
